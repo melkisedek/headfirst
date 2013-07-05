@@ -1,2 +1,5 @@
 #Vim swp files
 *.swp
+
+#Valgrind core-dumps
+vgcore.*
