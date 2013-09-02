@@ -1,0 +1,101 @@
+
+typedef struct {
+	float sx; //Where it is on
+	float sy; //the screen
+	float heading; //The direction it's pointing
+	float speed;
+	int gone; //Is it dead?
+	ALLEGRO_COLOR color;
+} Spaceship;
+
+
+//Make the ship green.
+Spaceship s; //create ship
+al_draw_line(-8, 9, 0, -11, s->color, 3.0f);
+al_draw_line(0, -11, 8, 9, s->color, 3.0f);
+al_draw_line(-6, 4, -1, 4, s->color, 3.0f);
+al_draw_line(6, 4, 1, 4, s->color, 3.0f);
+
+/*
+Even functions such as getchar()
+tend to buffer any characters you
+type until you hit return.
+*/
+
+//You create an event queue like this in a loop
+
+ALLEGRO_EVENT_QUEUE *queue;
+queue = al_create_event_queue();
+ALLEGRO_EVENT event;
+al_wait_for_event(queue, &event);
+
+/*
+Once you receive an event, you need to decide if it represents a
+keypress or not. You can do that by reading its type.
+*/
+if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+	switch(event.keyboard.keycode) {
+	case ALLEGRO_KEY_LEFT:
+	//Turn the ship left.
+	break;
+	case ALLEGRO_KEY_RIGHT:
+	//Turn right.
+	break;
+	case ALLEGRO_KEY_SPACE:
+	//Fire!
+	break;
+	}
+}
+
+/*must make code to make sure a blast goes across the screen*/
+//This is the struct for a blast:
+typedef struct {
+	float sx;
+	float sy;
+	float heading;
+	float speed;
+	int gone;
+	ALLEGRO_COLOR color;
+} Blast;
+
+//Use this struct for each asteroid:
+typedef struct {
+	float sx; //Where it is
+	float sy; //on the screen
+	float heading; //Which way it's headed
+	float twist; //Current rotation
+	float speed;
+	float rot_velocity; //Speed of rotation per frame
+	float scale; //Scaling factor to change its size
+	int gone; //Has it been destroyed?
+	ALLEGRO_COLOR color;
+} Asteroid;
+
+//This is the code to draw an asteroid around the origin:
+al_draw_line(-20, 20, -25, 5, a->color, 2.0f);
+al_draw_line(-25, 5, -25, -10, a->color, 2.0f);
+al_draw_line(-25, -10, -5, -10, a->color, 2.0f);
+al_draw_line(-5, -10, -10, -20, a->color, 2.0f);
+al_draw_line(-10, -20, 5, -20, a->color, 2.0f);
+al_draw_line(5, -20, 20, -10, a->color, 2.0f);
+al_draw_line(20, -10, 20, -5, a->color, 2.0f);
+al_draw_line(20, -5, 0, 0, a->color, 2.0f);
+al_draw_line(0, 0, 20, 10, a->color, 2.0f);
+al_draw_line(20, 10, 10, 20, a->color, 2.0f);
+al_draw_line(10, 20, 0, 15, a->color, 2.0f);
+al_draw_line(0, 15, -20, 20, a->color, 2.0f);
+
+
+//this is one way you might draw the spaceship on the screen:
+void draw_ship(Spaceship* s)
+{
+	ALLEGRO_TRANSFORM transform;
+	al_identity_transform(&transform);
+	al_rotate_transform(&transform, DEGREES(s->heading));
+	al_translate_transform(&transform, s->sx, s->sy);
+	al_use_transform(&transform);
+	al_draw_line(-8, 9, 0, -11, s->color, 3.0f);
+	al_draw_line(0, -11, 8, 9, s->color, 3.0f);
+	al_draw_line(-6, 4, -1, 4, s->color, 3.0f);
+	al_draw_line(6, 4, 1, 4, s->color, 3.0f);
+}
